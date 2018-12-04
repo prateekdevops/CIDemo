@@ -61,7 +61,7 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
 }
 
 def runApp(containerName, tag, dockerHubUser, httpPort){
-    ssh -i /root/AWSDemo.pem ec2-user@18.234.94.43 "sh \"docker pull $dockerHubUser/$containerName\""
-    ssh -i /root/AWSDemo.pem ec2-user@18.234.94.43 "sh \"docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag\""
+    ssh -i /root/AWSDemo.pem ec2-user@18.234.94.43 "sh docker pull $dockerHubUser/$containerName"
+    ssh -i /root/AWSDemo.pem ec2-user@18.234.94.43 "sh docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
 }
