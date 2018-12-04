@@ -61,7 +61,8 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
 }
 
 def runApp(containerName, tag, dockerHubUser, httpPort){
-    sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@18.234.94.43 \"sudo docker pull $dockerHubUser/$containerName\""
+    sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@18.234.94.43 \"sudo docker stop $containerName;sudo docker pull $dockerHubUser/$containerName\""
+ 
     sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@18.234.94.43 \"sudo docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag\""
     echo "Application started on port: ${httpPort} (http)"
 }
