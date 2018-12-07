@@ -15,6 +15,6 @@ import org.springframework.context.annotation.Configuration;
 public class PipelinesStarter {
 
     public static void main(String[] args){
-        SpringApplication.run123(PipelinesStarter.class, args);
+        SpringApplication.run(PipelinesStarter.class, args);
     }
 }
