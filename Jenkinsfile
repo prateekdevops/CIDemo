@@ -41,7 +41,7 @@ stage('Sonar'){
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
     }
     stage('Smoke Test in DEV'){
-        sh "sh /root/dev.sh"
+        sh "sh -x /root/dev.sh"
     }
 }
 
