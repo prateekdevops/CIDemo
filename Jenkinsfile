@@ -43,6 +43,18 @@ stage('Sonar'){
     stage('Smoke Test in DEV'){
         sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@174.129.177.27 \"sudo sh /tmp/dev.sh\""
     }
+    stage('Deploy App in QA'){
+        runAppQA(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
+    }
+    stage('Smoke Test in QA'){
+        sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@34.228.226.255 \"sudo sh /tmp/QA.sh\""
+    }
+    stage('Deploy App in Staging'){
+        runAppSTG(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
+    }
+    stage('Smoke Test in STG'){
+        sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@18.234.119.120 \"sudo sh /tmp/STG.sh\""
+    }
 }
 
 def imagePrune(containerName){
@@ -68,5 +80,17 @@ def runApp(containerName, tag, dockerHubUser, httpPort){
     sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@174.129.177.27 \"sudo docker stop $containerName;sudo docker pull $dockerHubUser/$containerName\""
  
     sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@174.129.177.27 \"sudo docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag\""
+    echo "Application started on port: ${httpPort} (http)"
+}
+def runAppQA(containerName, tag, dockerHubUser, httpPort){
+    sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@34.228.226.255 \"sudo docker stop $containerName;sudo docker pull $dockerHubUser/$containerName\""
+ 
+    sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@34.228.226.255 \"sudo docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag\""
+    echo "Application started on port: ${httpPort} (http)"
+}
+def runAppSTG(containerName, tag, dockerHubUser, httpPort){
+    sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@18.234.119.120 \"sudo docker stop $containerName;sudo docker pull $dockerHubUser/$containerName\""
+ 
+    sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@18.234.119.120 \"sudo docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag\""
     echo "Application started on port: ${httpPort} (http)"
 }
