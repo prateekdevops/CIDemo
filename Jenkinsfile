@@ -41,7 +41,7 @@ stage('Sonar'){
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
     }
     stage('Smoke Test in DEV'){
-        sh "sh -x /root/dev.sh"
+        sh "ssh -o StrictHostKeyChecking=no -i /root/AWSDemo.pem ec2-user@174.129.177.27 \"sudo sh -x /tmp/dev.sh\""
     }
 }
 
