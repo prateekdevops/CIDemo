@@ -44,7 +44,9 @@ stage('Sonar'){
     stage('Deploy App in DEV'){
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
     }
-
+    stage('Smoke Test in DEV'){
+        sh "/usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/devjs"
+    }
 }
 
 def imagePrune(containerName){
