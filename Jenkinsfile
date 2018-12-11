@@ -25,11 +25,7 @@ stage('Sonar'){
             echo "The sonar server could not be reached ${error}"
         }
      }
-   
-
-    stage("Image Prune"){
-        imagePrune(CONTAINER_NAME)
-    }
+  
 
     stage('Image Build'){
         imageBuild(CONTAINER_NAME, CONTAINER_TAG)
@@ -45,7 +41,7 @@ stage('Sonar'){
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
     }
     stage('Smoke Test in DEV'){
-        sh "phantomjs /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/devjs"
+        sh "sh /root/dev.sh"
     }
 }
 
